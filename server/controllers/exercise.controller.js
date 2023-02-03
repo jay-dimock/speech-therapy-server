@@ -1,7 +1,6 @@
 const { Exercise } = require("../models/exercise.model");
 
 module.exports.createExercise = (req, res) => {
-  //console.log(req.body);
   const { userId, category, transcript } = req.body;
   const arr = transcript.split(" ").filter((w) => w); //filter prevents empty strings from counting as a word
   let words = [...new Set(arr)]; //removes duplicate words
@@ -11,7 +10,6 @@ module.exports.createExercise = (req, res) => {
 
   Exercise.create({ userId, category, words })
     .then((exercise) => {
-      //console.log(exercise);
       res.json({ _id: exercise._id, wordCount: words.length });
     })
     .catch((err) => res.status(400).json(err));
@@ -24,7 +22,6 @@ module.exports.getExercise = (req, res) => {
 };
 
 module.exports.updateWord = (req, res) => {
-  //console.log(req.body);
   Exercise.findById({ _id: req.params.id })
     .then((e) => {
       e.words.splice(req.body.index, 1, req.body.word);
@@ -35,7 +32,6 @@ module.exports.updateWord = (req, res) => {
 };
 
 module.exports.deleteWord = (req, res) => {
-  //console.log(req.body);
   Exercise.findById({ _id: req.params.id })
     .then((e) => {
       e.words.splice(req.body.index, 1);
@@ -52,7 +48,6 @@ module.exports.deleteExercise = (req, res) => {
 };
 
 module.exports.dates = (req, res) => {
-  //console.log("dates endpoint", req.params);
   Exercise.aggregate([
     { $match: { userId: req.params.userId } },
     {
@@ -74,7 +69,6 @@ module.exports.dates = (req, res) => {
 };
 
 module.exports.date = (req, res) => {
-  //console.log("date endpoint", req.params);
   Exercise.aggregate([
     { $match: { userId: req.params.userId } },
     {
